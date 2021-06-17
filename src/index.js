@@ -39,6 +39,18 @@ try {
         }
         // If it did not fail get the json
         const json = JSON.parse(body);
+        // If there are the amount of messages as they want
+        var x = 0;
+        for (var i = 0; i < json.data.children.length; i++) {
+            if (json.data.children[i].data.pinned === false && json.data.children[i].data.over_18 === false ) x++;
+        }
+        // are there less than they wanted?
+        if (x < process.env.NumberOfClips) {
+            // Tell user that it failed
+            console.log(`I am sorry but there are more less clips than you want you have to lower that number in your \".env\" file the most that are in this subreddit is ${x}`);
+            // Stopping program
+            process.exit(1);
+        }
     })
     //Make video
 } catch (err) {
