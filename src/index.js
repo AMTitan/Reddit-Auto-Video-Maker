@@ -3,6 +3,7 @@ require("dotenv").config();
 const ffmpeg = require('ffmpeg');
 const { createCanvas, loadImage } = require('canvas');
 const fs = require("fs");
+const request = require('request');
 
 // See if .env file exists
 try {
@@ -27,6 +28,18 @@ try {
         // Stopping program
         process.exit(1);
     }
+    // Get json of page
+    request(`https://www.reddit.com/r/${process.env.Reddit}/hot.json`, function(error, response, body) {
+        // If it failed
+        if (!(!error && response.statusCode == 200)) {
+            // Tell user that it failed
+            console.log(`I am sorry but it failed \nError code: ${response.statusCode}\nError: ${error}`);
+            // Stopping program
+            process.exit(1);
+        }
+        // If it did not fail get the json
+        const json = JSON.parse(body);
+    })
     //Make video
 } catch (err) {
     console.error(err);
