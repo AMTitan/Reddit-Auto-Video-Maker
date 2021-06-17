@@ -1,20 +1,23 @@
 // requires
 require("dotenv").config();
 const ffmpeg = require('ffmpeg');
-const { createCanvas, loadImage } = require('canvas');
+const {
+    createCanvas,
+    loadImage
+} = require('canvas');
 const fs = require("fs");
 const request = require('request');
 
 // See if .env file exists
 try {
-    if(fs.existsSync('.env')) {
+    if (fs.existsSync('.env')) {
         // It exists dont need to do anything
         console.log("The file exists dont need to make it.");
     } else {
         // It does not exists
         console.log('The file does not exist so trying to make it.');
         // Making file
-        fs.writeFileSync('.env', "# All url files can be local files just put the file in the root directory of this program and put the name like sample.png\nReddit=(example entitledparents)\nBackgroundImage=(example https://i.imgur.com/igiMj39.jpeg)\nComments=(example 1)\nBetweenClips=(example https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4)\nNumberOfClips=(example 20)", function (err) {
+        fs.writeFileSync('.env', "# All url files can be local files just put the file in the root directory of this program and put the name like sample.png\nReddit=(example entitledparents)\nBackgroundImage=(example https://i.imgur.com/igiMj39.jpeg)\nComments=(example 1)\nBetweenClips=(example https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4)\nNumberOfClips=(example 20)", function(err) {
             if (err) {
                 console.error(err);
                 // If file not made stop program
@@ -42,7 +45,7 @@ try {
         // If there are the amount of messages as they want
         var x = 0;
         for (var i = 0; i < json.data.children.length; i++) {
-            if (json.data.children[i].data.pinned === false && json.data.children[i].data.over_18 === false ) x++;
+            if (json.data.children[i].data.pinned === false && json.data.children[i].data.over_18 === false) x++;
         }
         // are there less than they wanted?
         if (x < process.env.NumberOfClips) {
@@ -52,7 +55,6 @@ try {
             process.exit(1);
         }
     })
-    //Make video
 } catch (err) {
     console.error(err);
 }
