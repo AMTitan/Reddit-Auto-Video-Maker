@@ -42,10 +42,19 @@ try {
         }
         // If it did not fail get the json
         const json = JSON.parse(body);
+        // All the ids
+        var allClips = [...Array(json.data.children.length).keys()];
         // If there are the amount of messages as they want
         var x = 0;
         for (var i = 0; i < json.data.children.length; i++) {
-            if (json.data.children[i].data.pinned === false && json.data.children[i].data.over_18 === false) x++;
+            if (json.data.children[i].data.pinned === false && json.data.children[i].data.over_18 === false && json.data.children[i].data.stickied === false) {
+                // increase the number of valid items
+                x++;
+            }
+            else {
+                // if not valid remove the id
+                allClips.splice(i, 1);
+            };
         }
         // are there less than they wanted?
         if (x < process.env.NumberOfClips) {
@@ -54,6 +63,17 @@ try {
             // Stopping program
             process.exit(1);
         }
+        //get first items in array
+        allClips = allClips.slice(0, process.env.NumberOfClips);
+        // foreach clip
+        allClips.forEach(id => {
+            // Split the text
+            const text = json.data.children[id].data.selftext.split(",").join(".").split(";").join(".").split(".");
+            // for each text get the tts link
+            for (var x = 0; x < text.length; x++) {
+                // Make video with words
+            }
+        })
     })
 } catch (err) {
     console.error(err);
